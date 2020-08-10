@@ -23,21 +23,23 @@ own server with your own twilio account [see here](#how-to-run-your-own-server-l
 
 For basic operation, you need only create an account, and when you're ready just hit "Run Quiz" to
 complete setting up your first quiz session. When you run it, you'll see the current question display
-###Create
+
+### Create
+
 You can host your own trivia packs by creating them in "Create Trivia Pack"
 ![alt text](screenshots/create_form.png?raw=True)
 
-###Host
+### Host
+
 ![alt text](screenshots/setup_screen.png?raw=True)
 ![alt text](screenshots/quiz-run.png?raw=True)
 
-
-or select from prebuilt trivia packs provited by us truly
-
+or select from prebuilt trivia packs provided by us truly
 
 ![alt text](screenshots/trivia_pack_page.PNG?raw=True)
 
 ###Participate
+
 Participants can join using their phone by texting the the trivia session code to the phone number provided 
 ![alt text](screenshots/invite.png?raw=True)
 
