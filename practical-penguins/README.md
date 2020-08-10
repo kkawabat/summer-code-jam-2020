@@ -5,13 +5,13 @@ by Practical :penguin:
 
 1. [About](#about)
 2. [App features](#tour-of-the-app)
-    1. [Create Trivia Packs (session master)](#create)
-    2. [Host trivia session (session master)](#host)
-    3. [Join session using your phone (participant)](#participate)
-    4. [View Trivia packs by user (session master/participant)](#profile) 
+    1. [Create Trivia Packs (session master)](#create-trivia-packs-(session master))
+    2. [Host trivia session (session master)](#host-trivia-session-(session master))
+    3. [Join session using your phone (participant)](#join-session-using-your-phone-(participant))
+    4. [View Trivia packs by user (session master/participant)](#view-trivia-packs-by-user-(session master/participant)) 
 3. [Installation](#Installation)
 5. [how to run your own server locally](#how-to-run-your-own-server-locally) 
-6. [Future Ideas](#Ideas-and-Feature-for-the-future)
+6. [Future Ideas](#future-ideas)
 
 ## About
 This django web application allows people to create and organize trivia events. Participants can then answer trivia
@@ -24,28 +24,29 @@ own server with your own twilio account [see here](#how-to-run-your-own-server-l
 For basic operation, you need only create an account, and when you're ready just hit "Run Quiz" to
 complete setting up your first quiz session. When you run it, you'll see the current question display
 
-### Create
+### Create Trivia Packs (session master)
 
 You can host your own trivia packs by creating them in "Create Trivia Pack"
-![alt text](screenshots/create_form.png?raw=True)
+![alt text](screenshots/create_form.PNG?raw=True)
 
-### Host
+### Host trivia session (session master)
 
-![alt text](screenshots/setup_screen.png?raw=True)
+![alt text](screenshots/setup_screen.PNG?raw=True)
+
 ![alt text](screenshots/quiz-run.png?raw=True)
 
 or select from prebuilt trivia packs provided by us truly
 
 ![alt text](screenshots/trivia_pack_page.PNG?raw=True)
 
-###Participate
+### Join session using your phone (participant)
 
 Participants can join using their phone by texting the the trivia session code to the phone number provided 
-![alt text](screenshots/invite.png?raw=True)
+![alt text](screenshots/invite.PNG?raw=True)
 
 ![alt text](screenshots/sms_screenshot.jpg?raw=True)
 
-###Profile
+### View Trivia packs by user (session master/participant)
 
 
 ## Installation
