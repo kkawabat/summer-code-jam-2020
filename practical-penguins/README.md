@@ -48,6 +48,9 @@ Participants can join using their phone by texting the the trivia session code t
 
 ### View Trivia packs by user (session master/participant)
 
+Click on user's name to see their profile as well as trivia packs they have created.
+ 
+![alt text](screenshots/profile-page.PNG?raw=True)
 
 ## Installation
 This package is tested on python 3.8
