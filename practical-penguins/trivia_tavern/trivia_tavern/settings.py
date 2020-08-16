@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'twilio_messenger.apps.TwilioMessengerConfig',
     'crispy_forms',
     'jquery',
+    'channels',
+    'django_eventstream',
     'phonenumber_field',
     'djangoformsetjs',
     'django.contrib.admin',
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_grip.GripMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,6 +85,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'trivia_tavern.wsgi.application'
+ASGI_APPLICATION = 'trivia_tavern.routing.application'
 
 
 # Database
