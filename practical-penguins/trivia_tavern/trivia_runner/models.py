@@ -10,13 +10,15 @@ from django.utils import timezone
 from trivia_builder.models import TriviaQuiz, TriviaQuestion
 from phonenumber_field.modelfields import PhoneNumberField
 
+from twilio_messenger.models import ScoreCard
+
 
 class Player(models.Model):
     team_name = models.CharField(max_length=24, default='')
     phone_number = PhoneNumberField()
     # Model name needs to be in quotes according to
     # https://docs.djangoproject.com/en/3.0/ref/models/fields/#foreignkey
-    active_session = models.ForeignKey('ActiveTriviaQuiz', on_delete=models.CASCADE)
+    active_session = models.ForeignKey('TriviaSession', on_delete=models.CASCADE)
 
     def get_answers(self):
         answer_set = PlayerAnswer.objects.filter(player=self)
@@ -37,6 +39,7 @@ class PlayerAnswer(models.Model):
     value = models.CharField(max_length=500, default='')
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     question = models.ForeignKey(TriviaQuestion, on_delete=models.CASCADE)
+    score_card = models.ForeignKey(ScoreCard, on_delete=models.CASCADE)
 
     def is_correct(self):
         return self.value.upper() == self.question.question_answer.upper()
