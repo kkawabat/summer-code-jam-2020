@@ -13,13 +13,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Player(models.Model):
     team_name = models.CharField(max_length=24, default='')
-    phone_number = models.CharField(max_length=12)
+    phone_number = PhoneNumberField()
     # Model name needs to be in quotes according to
     # https://docs.djangoproject.com/en/3.0/ref/models/fields/#foreignkey
-    active_quiz = models.ForeignKey('ActiveTriviaQuiz', on_delete=models.CASCADE)
+    active_session = models.ForeignKey('ActiveTriviaQuiz', on_delete=models.CASCADE)
 
     def get_answers(self):
-        answer_set = Answer.objects.filter(player=self)
+        answer_set = PlayerAnswer.objects.filter(player=self)
         answers = ""
         for i, answer in enumerate(answer_set, start=1):
             if answer.is_correct():
@@ -30,10 +30,10 @@ class Player(models.Model):
         return answers
 
     def __str__(self):
-        return f'{self.phone_number} playing {self.active_quiz.trivia_quiz.name}'
+        return f'{self.phone_number} playing {self.active_session.trivia_quiz.name}'
 
 
-class Answer(models.Model):
+class PlayerAnswer(models.Model):
     value = models.CharField(max_length=500, default='')
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     question = models.ForeignKey(TriviaQuestion, on_delete=models.CASCADE)
@@ -61,7 +61,3 @@ class TriviaSession(models.Model):
                 f'q#:{self.current_question_index} '
                 f' players:{self.players.count()}'
                 )
-
-
-class PhoneNumber(models.Model):
-    phone_number = PhoneNumberField()

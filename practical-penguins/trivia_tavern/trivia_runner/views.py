@@ -23,16 +23,16 @@ class ActiveTriviaSessionListView(ListView):
 def setup(request, trivia_session):
     print(request.POST)
     if 'phone_number' in request.POST:
-        form = PhoneNumberForm(request.POST)
-        if form.is_valid():
-            form.save()
-            number = form.cleaned_data.get('phone_number').__str__()
-            messages.success(request, f'Invite sent to {number}!')
-            SMSBot.send_quiz_invite(number, trivia_session)
+        phonenumber_form = PhoneNumberForm(request.POST)
+        if phonenumber_form.is_valid():
+            player = phonenumber_form.save(commit=False)
+            player.active_session = trivia_session
+            messages.success(request, f'Invite sent to {player.phone_number}!')
+            SMSBot.send_quiz_invite(player.phone_number, trivia_session)
     else:
-        form = PhoneNumberForm()
+        phonenumber_form = PhoneNumberForm()
 
-    return render(request, 'session-setup-page.html', {'trivia_session': trivia_session, 'form': form})
+    return render(request, 'session-setup-page.html', {'trivia_session': trivia_session, 'form': phonenumber_form})
 
 
 def times_up(request, trivia_session):

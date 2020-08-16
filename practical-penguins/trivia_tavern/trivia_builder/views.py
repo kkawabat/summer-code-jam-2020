@@ -52,7 +52,7 @@ class TriviaQuizDetailView(DetailView):
 
     def post(self, request, *args, **kwargs):
         trivia_session = TriviaSession.objects.create(trivia_quiz=self.get_object(),
-                                                             session_master=request.user)
+                                                      session_master=request.user)
         trivia_session.save()
         return HttpResponseRedirect(reverse('trivia-session', kwargs={'pk': trivia_session.pk}))
 
