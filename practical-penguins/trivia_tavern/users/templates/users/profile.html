@@ -13,7 +13,7 @@
                     {% if current_hosted_session %}
                         {% with current_hosted_session|first as current_hosted_session %}
                             <h2 class="account-heading">Current status:
-                                <a class="article-title" href="{% url 'activequiz' current_hosted_session.pk %}">
+                                <a class="article-title" href="{% url 'trivia-session' current_hosted_session.pk %}">
                                     hosting trivia session
                                 </a>
                             </h2>

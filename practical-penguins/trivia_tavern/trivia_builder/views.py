@@ -54,7 +54,7 @@ class TriviaQuizDetailView(DetailView):
         trivia_session = TriviaSession.objects.create(trivia_quiz=self.get_object(),
                                                              session_master=request.user)
         trivia_session.save()
-        return HttpResponseRedirect(reverse('activequiz', kwargs={'pk': trivia_session.pk}))
+        return HttpResponseRedirect(reverse('trivia-session', kwargs={'pk': trivia_session.pk}))
 
 
 class TriviaQuizCreateView(PassRequestToFormViewMixin, LoginRequiredMixin, CreateView):

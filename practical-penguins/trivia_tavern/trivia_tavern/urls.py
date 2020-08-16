@@ -36,7 +36,7 @@ urlpatterns = [
     path('sms/', include('twilio_messenger.urls')),
     path('', home, name='home_page'),
     path('quiz/', include('trivia_builder.urls')),
-    path('activequiz/', include('trivia_runner.urls')),
+    path('trivia-session/', include('trivia_runner.urls')),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico')))
 ]
 

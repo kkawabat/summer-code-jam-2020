@@ -19,7 +19,7 @@
         setTimeout(function() {
           display.textContent='Times up!'
           // make post request
-          var url = "{% url 'activequiz' trivia_session.pk %}";
+          var url = "{% url 'trivia-session' trivia_session.pk %}";
           var params = "times-up";
           var xhr = new XMLHttpRequest();
           xhr.open("POST", url, true);
