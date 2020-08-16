@@ -1,27 +1,19 @@
 from typing import Tuple, List, Optional
 
 from django.db import models
-from trivia_runner.models import Player, TriviaSession
-
-
-class ScoreDeck(models.Model):
-    session = models.OneToOneField(TriviaSession, on_delete=models.CASCADE)
-
-    def calc_result(self):
-        score_result = []
-        for score_card in self.scorecard_set:
-            score = score_card.calc_score()
-            name = score_card.player.team_name
-            score_result.append((name, score))
-        return score_result
+from trivia_runner.models import Player, TriviaSession, PlayerAnswer
 
 
 class ScoreCard(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    score_deck = models.ForeignKey(ScoreDeck, on_delete=models.CASCADE)
 
     def calc_score(self):
         return sum([answer.is_correct() for answer in self.playeranswer_set])
+
+    def get_result_details(self):
+        answer_set = PlayerAnswer.objects.filter(player=self.player)
+        question_results = [answer.result_detail() for i, answer in enumerate(answer_set, start=1)]
+        return '\n'.join(question_results)
 
 
 class ScoreTracker(models.Model):

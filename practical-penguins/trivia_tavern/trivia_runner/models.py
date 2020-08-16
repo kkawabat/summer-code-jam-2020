@@ -20,17 +20,6 @@ class Player(models.Model):
     # https://docs.djangoproject.com/en/3.0/ref/models/fields/#foreignkey
     active_session = models.ForeignKey('TriviaSession', on_delete=models.CASCADE)
 
-    def get_answers(self):
-        answer_set = PlayerAnswer.objects.filter(player=self)
-        answers = ""
-        for i, answer in enumerate(answer_set, start=1):
-            if answer.is_correct():
-                answers += f'Question {i}: your answer: {answer.value} is correct\n'
-            else:
-                answers += f'Question {i}: your answer: {answer.value} ' \
-                           f'does not match {answer.question.question_answer}\n'
-        return answers
-
     def __str__(self):
         return f'{self.phone_number} playing {self.active_session.trivia_quiz.name}'
 
@@ -44,6 +33,16 @@ class PlayerAnswer(models.Model):
     def is_correct(self):
         return self.value.upper() == self.question.question_answer.upper()
 
+    def result_detail(self):
+        if self.is_correct():
+            result = f'{self.question.question_text}\n' \
+                     f'your answer: {self.value} is correct\n'
+        else:
+            result = f'{self.question.question_text}\n' \
+                     f'your answer: {self.value} is incorrect\n' \
+                     f'correct answer: {self.question.question_answer}'
+        return result
+
 
 def gen_session_code():
     session_code_val = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
@@ -54,13 +53,20 @@ class TriviaSession(models.Model):
     trivia_quiz = models.ForeignKey(TriviaQuiz, on_delete=models.CASCADE)
     session_code = models.CharField(max_length=6, unique=True,
                                     default=gen_session_code, editable=False)
-    current_question_index = models.IntegerField(default=0)
+
     session_master = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_master')
-    start_time = models.DateTimeField(default=timezone.now)
     players = models.ManyToManyField(Player, related_name='quiz_players')
+
+    start_time = models.DateTimeField(default=timezone.now)
+
+    current_question_index = models.IntegerField(default=0)
 
     def __str__(self):
         return (f'Active Quiz:{self.trivia_quiz.name} '
                 f'q#:{self.current_question_index} '
                 f' players:{self.players.count()}'
                 )
+
+    def calc_result(self):
+        score_result = [(score_card.calc_score(), score_card.player.team_name) for score_card in self.scorecard_set]
+        return score_result
