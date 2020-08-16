@@ -1,7 +1,28 @@
 from typing import Tuple, List, Optional
 
 from django.db import models
-from trivia_runner.models import Player, TriviaSession, PlayerAnswer
+
+from trivia_builder.models import TriviaQuestion
+from trivia_runner.models import Player
+
+
+class ScoreCardAnswer(models.Model):
+    value = models.CharField(max_length=500, default='')
+    question = models.ForeignKey(TriviaQuestion, on_delete=models.CASCADE)
+    score_card = models.ForeignKey('ScoreCard', on_delete=models.CASCADE)
+
+    def is_correct(self):
+        return self.value.upper() == self.question.question_answer.upper()
+
+    def result_detail(self):
+        if self.is_correct():
+            result = f'{self.question.question_text}\n' \
+                     f'your answer: {self.value} is correct\n'
+        else:
+            result = f'{self.question.question_text}\n' \
+                     f'your answer: {self.value} is incorrect\n' \
+                     f'correct answer: {self.question.question_answer}'
+        return result
 
 
 class ScoreCard(models.Model):
@@ -11,7 +32,7 @@ class ScoreCard(models.Model):
         return sum([answer.is_correct() for answer in self.playeranswer_set])
 
     def get_result_details(self):
-        answer_set = PlayerAnswer.objects.filter(player=self.player)
+        answer_set = ScoreCardAnswer.objects.filter(player=self.player)
         question_results = [answer.result_detail() for i, answer in enumerate(answer_set, start=1)]
         return '\n'.join(question_results)
 

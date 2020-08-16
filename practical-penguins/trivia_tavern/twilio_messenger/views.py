@@ -3,8 +3,8 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from trivia_builder.models import TriviaQuestion
-from trivia_runner.models import TriviaSession, Player, PlayerAnswer
-from .models import ScoreTracker
+from trivia_runner.models import TriviaSession, Player
+from .models import ScoreTracker, ScoreCardAnswer
 
 
 class SMSBot:
@@ -108,7 +108,7 @@ class SMSBot:
         if score_track.answered_this_round:
             return SMSBot.send('You already answered! Don\'t cheat!', player.phone_number)
 
-        ans = PlayerAnswer.objects.create(value=body, player=player, question=current_question)
+        ans = ScoreCardAnswer.objects.create(value=body, player=player, question=current_question)
         if ans.is_correct():
             score_track.points += 1
         score_track.answered_this_round = True
@@ -125,7 +125,7 @@ class SMSBot:
             if not score_track.answered_this_round:
                 current_question = TriviaQuestion.objects.get(quiz=trivia_session.trivia_quiz,
                                                               question_index=trivia_session.current_question_index)
-                PlayerAnswer.objects.create(value="", player=player, question=current_question)
+                ScoreCardAnswer.objects.create(value="", player=player, question=current_question)
                 score_track.answered_this_round = True
                 score_track.save()
             SMSBot.send('TIME IS UP. NO MORE ANSWERS!', player.phone_number)

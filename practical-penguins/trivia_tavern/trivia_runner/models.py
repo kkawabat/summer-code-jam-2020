@@ -6,11 +6,9 @@ import string
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-
-from trivia_builder.models import TriviaQuiz, TriviaQuestion
 from phonenumber_field.modelfields import PhoneNumberField
 
-from twilio_messenger.models import ScoreCard
+from trivia_builder.models import TriviaQuiz
 
 
 class Player(models.Model):
@@ -22,26 +20,6 @@ class Player(models.Model):
 
     def __str__(self):
         return f'{self.phone_number} playing {self.active_session.trivia_quiz.name}'
-
-
-class PlayerAnswer(models.Model):
-    value = models.CharField(max_length=500, default='')
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    question = models.ForeignKey(TriviaQuestion, on_delete=models.CASCADE)
-    score_card = models.ForeignKey(ScoreCard, on_delete=models.CASCADE)
-
-    def is_correct(self):
-        return self.value.upper() == self.question.question_answer.upper()
-
-    def result_detail(self):
-        if self.is_correct():
-            result = f'{self.question.question_text}\n' \
-                     f'your answer: {self.value} is correct\n'
-        else:
-            result = f'{self.question.question_text}\n' \
-                     f'your answer: {self.value} is incorrect\n' \
-                     f'correct answer: {self.question.question_answer}'
-        return result
 
 
 def gen_session_code():
@@ -62,10 +40,7 @@ class TriviaSession(models.Model):
     current_question_index = models.IntegerField(default=0)
 
     def __str__(self):
-        return (f'Active Quiz:{self.trivia_quiz.name} '
-                f'q#:{self.current_question_index} '
-                f' players:{self.players.count()}'
-                )
+        return f'Active Quiz:{self.trivia_quiz.name} q#:{self.current_question_index} players:{self.players.count()}'
 
     def calc_result(self):
         score_result = [(score_card.calc_score(), score_card.player.team_name) for score_card in self.scorecard_set]
