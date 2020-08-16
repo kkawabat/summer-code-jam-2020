@@ -130,3 +130,5 @@ dmypy.json
 
 # PyCharm Project folder
 .idea/
+/practical-penguins/django-eventstream-master/
+/practical-penguins/trivia_tavern/static/xcf_files/

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 import string
 
@@ -45,9 +47,8 @@ def gen_session_code():
     return session_code_val
 
 
-class ActiveTriviaQuiz(models.Model):
+class TriviaSession(models.Model):
     trivia_quiz = models.ForeignKey(TriviaQuiz, on_delete=models.CASCADE)
-
     session_code = models.CharField(max_length=6, unique=True,
                                     default=gen_session_code, editable=False)
     current_question_index = models.IntegerField(default=0)

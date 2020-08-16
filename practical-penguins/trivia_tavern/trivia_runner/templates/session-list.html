@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% if active_quizzes %}
+{% if active_sessions %}
   <div class="row justify-content-md-center">
     <div class="parchment-border col-md-auto bulletin-title">
         <h1 class="justify-content-center bulletin-title">Quizzes currently active</h1>
@@ -8,7 +8,7 @@
   </div>
 
 
-  {% for quiz in active_quizzes %}
+  {% for quiz in active_sessions %}
     <div class="row ">
       <article class="media parchment-border">
         <img class="rounded-circle article-img" src="{{ quiz.session_master.profile.image.url }}">

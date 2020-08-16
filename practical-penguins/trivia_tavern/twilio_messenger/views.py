@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from trivia_builder.models import TriviaQuestion
-from trivia_runner.models import ActiveTriviaQuiz, Player, Answer
+from trivia_runner.models import TriviaSession, Player, Answer
 from .models import ScoreTracker
 
 
@@ -117,36 +117,36 @@ class SMSBot:
         return SMSBot.send(msg, player.phone_number)
 
     @staticmethod
-    def player_timeout(active_trivia_quiz):
+    def player_timeout(trivia_session):
         for player in Player.objects.all():
             score_track = ScoreTracker.objects.get(player_phone=player.phone_number,
-                                                   session_code=active_trivia_quiz.session_code)
+                                                   session_code=trivia_session.session_code)
 
             if not score_track.answered_this_round:
-                current_question = TriviaQuestion.objects.get(quiz=active_trivia_quiz.trivia_quiz,
-                                                              question_index=active_trivia_quiz.current_question_index)
+                current_question = TriviaQuestion.objects.get(quiz=trivia_session.trivia_quiz,
+                                                              question_index=trivia_session.current_question_index)
                 Answer.objects.create(value="", player=player, question=current_question)
                 score_track.answered_this_round = True
                 score_track.save()
             SMSBot.send('TIME IS UP. NO MORE ANSWERS!', player.phone_number)
 
     @staticmethod
-    def send_all_questions(active_trivia_quiz):
-        cur_question = TriviaQuestion.objects.get(quiz=active_trivia_quiz.trivia_quiz,
-                                                  question_index=active_trivia_quiz.current_question_index)
+    def send_all_questions(trivia_session):
+        cur_question = TriviaQuestion.objects.get(quiz=trivia_session.trivia_quiz,
+                                                  question_index=trivia_session.current_question_index)
         for player in Player.objects.all():
             score_track = ScoreTracker.objects.get(player_phone=player.phone_number,
-                                                   session_code=active_trivia_quiz.session_code)
+                                                   session_code=trivia_session.session_code)
             score_track.answered_this_round = False
             score_track.save()
             SMSBot.send_question(cur_question, player)
 
     @staticmethod
-    def calculate_results(active_trivia_quiz):
+    def calculate_results(trivia_session):
         # must be filter in order to get multiple questions
-        question_set = TriviaQuestion.objects.filter(quiz=active_trivia_quiz.trivia_quiz)
+        question_set = TriviaQuestion.objects.filter(quiz=trivia_session.trivia_quiz)
 
-        score_list = ScoreTracker.get_team_score_list(active_trivia_quiz.session_code)
+        score_list = ScoreTracker.get_team_score_list(trivia_session.session_code)
         winner = ScoreTracker.winner(score_list)
         if winner is None:
             winner = "No one participated :("
@@ -156,7 +156,7 @@ class SMSBot:
         # release players here
         for player in Player.objects.all():
             score_track = ScoreTracker.objects.get(player_phone=player.phone_number,
-                                                   session_code=active_trivia_quiz.session_code)
+                                                   session_code=trivia_session.session_code)
 
             goodbye = (f'The session has ended, thanks for playing!\n'
                        f'Team {winner} was the winner!\n'
@@ -169,12 +169,12 @@ class SMSBot:
         return tally_results
 
     @staticmethod
-    def send_quiz_invite(number, active_trivia_quiz):
-        intro = (f'Hello! You\'ve been invited to play {active_trivia_quiz.trivia_quiz.name}'
+    def send_quiz_invite(number, trivia_session):
+        intro = (f'Hello! You\'ve been invited to play {trivia_session.trivia_quiz.name}'
                  f'If you\'re not game, just text back !quit we won\'t bother you!'
                  f'Otherwise, please text back a team name to join')
         SMSBot.send(intro, number)
-        SMSBot.register(number, active_trivia_quiz)
+        SMSBot.register(number, trivia_session)
 
 
 @csrf_exempt
@@ -197,7 +197,7 @@ def sms_reply(request):
 
     # check if the text is from a registered Player, can be null
     player = Player.objects.filter(phone_number=from_)
-    available_quizzes = ActiveTriviaQuiz.objects.all()
+    available_quizzes = TriviaSession.objects.all()
     session_codes = [q.session_code for q in available_quizzes]
 
     if body.upper() == '!QUIT':

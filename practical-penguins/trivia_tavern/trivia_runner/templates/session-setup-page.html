@@ -5,10 +5,10 @@
 
 <div class="parchment-border">
     <div class="row">
-        <div class="col-md-12"><h1> starting {{ active_trivia_quiz.trivia_quiz.name }}  </h1></div>
+        <div class="col-md-12"><h1> starting {{ trivia_session.trivia_quiz.name }}  </h1></div>
     </div>
-    <p><strong>Session_master:</strong> <a href="">{{ active_trivia_quiz.session_master.username }}</a></p>
-    <p><strong>created on:</strong> {{ active_trivia_quiz.start_time }}</p>
+    <p><strong>Session_master:</strong> <a href="">{{ trivia_session.session_master.username }}</a></p>
+    <p><strong>created on:</strong> {{ trivia_session.start_time }}</p>
     <hr>
 
     <div class="row">
@@ -17,7 +17,7 @@
 
 
     <br>
-    <p>To start this quiz, text <span class="clear-text">{{ active_trivia_quiz.session_code }}</span> to
+    <p>To start this quiz, text <span class="clear-text">{{ trivia_session.session_code }}</span> to
         <span class="clear-text"> {% settings_value "HOST_TWILIO_NUMBER" %} </span></p>
     <p>or invite a player manually with a phone number below</p>
     <br>

@@ -19,7 +19,7 @@
         setTimeout(function() {
           display.textContent='Times up!'
           // make post request
-          var url = "{% url 'activequiz' active_trivia_quiz.pk %}";
+          var url = "{% url 'activequiz' trivia_session.pk %}";
           var params = "times-up";
           var xhr = new XMLHttpRequest();
           xhr.open("POST", url, true);
@@ -48,11 +48,11 @@
 </script>
 <div class="parchment-border ">
     <div class="row">
-        <div class="col-md-12"><h1>Question {{ active_trivia_quiz.current_question_index }}</h1>  </div>
+        <div class="col-md-12"><h1>Question {{ trivia_session.current_question_index }}</h1>  </div>
         <h2> {{ cur_question.question_text }}</h2>
     </div>
     <div class="row justify-content-end">
-        {% if request.user == active_trivia_quiz.session_master %}
+        {% if request.user == trivia_session.session_master %}
 <!--            <button type="submit" class="stamp is-draft" value="pause-timer" id="pause-timer">Times up!</button>-->
         {% endif %}
         {% include "trivia_next_step_btn.html" %}

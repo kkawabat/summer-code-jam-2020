@@ -16,12 +16,12 @@ from django.views.generic import (
 
 from trivia_builder.forms import TriviaQuizForm, TriviaQuestionForm
 from trivia_builder.models import TriviaQuiz, TriviaQuestion
-from trivia_runner.models import ActiveTriviaQuiz
+from trivia_runner.models import TriviaSession
 
 
 class TriviaQuizListView(ListView):
     model = TriviaQuiz
-    template_name = 'trivia_builder/quiz_list.html'
+    template_name = 'trivia_builder/quiz-list.html'
     context_object_name = 'quizzes'
     ordering = ['-date_posted']
     paginate_by = 10
@@ -48,19 +48,19 @@ class UserTriviaQuizListView(ListView):
 class TriviaQuizDetailView(DetailView):
     model = TriviaQuiz
     context_object_name = 'quiz'
-    template_name = 'trivia_builder/triviaquiz_detail.html'
+    template_name = 'trivia_builder/quiz-detail-page.html'
 
     def post(self, request, *args, **kwargs):
-        active_trivia_quiz = ActiveTriviaQuiz.objects.create(trivia_quiz=self.get_object(),
+        trivia_session = TriviaSession.objects.create(trivia_quiz=self.get_object(),
                                                              session_master=request.user)
-        active_trivia_quiz.save()
-        return HttpResponseRedirect(reverse('activequiz', kwargs={'pk': active_trivia_quiz.pk}))
+        trivia_session.save()
+        return HttpResponseRedirect(reverse('activequiz', kwargs={'pk': trivia_session.pk}))
 
 
 class TriviaQuizCreateView(PassRequestToFormViewMixin, LoginRequiredMixin, CreateView):
     model = TriviaQuiz
     fields = ['name']
-    template_name = 'trivia_builder/triviaquiz_form.html'
+    template_name = 'trivia_builder/quiz-form-page.html'
 
     def post(self, request, *args, **kwargs):
         quiz_form = TriviaQuizForm(request.POST)
