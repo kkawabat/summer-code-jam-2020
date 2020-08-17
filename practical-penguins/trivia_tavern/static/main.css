@@ -9,58 +9,28 @@ body {
     margin-top: 5rem;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     color: #000000;
     font-family: 'Pirata One', cursive;
 }
 
-ul {
-    margin: 0;
+ul {margin: 0;}
+
+.logo-size {height: 60px;}
+
+input[type=text], input[type=text]:focus,
+input[type=tel], input[type=tel]:focus,
+input[type=password], input[type=password]:focus,
+input[type=email], input[type=email]:focus {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid #000000;
 }
 
-.logo-size {
-    height: 60px;
-}
 
-label {
+label, legend, p {
     font-size: large;
     font-family: 'Pirata One', cursive;
-}
-
-input[type=text] {
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid #000000;
-}
-
-input[type=text]:focus{
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid #000000;
-}
-
-input[type=tel] {
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid #000000;
-}
-
-input[type=tel]:focus{
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid #000000;
-}
-
-p {
-    margin: 0;
-    font-size: large;
-    font-family: 'Pirata One', cursive;
-
 }
 
 .navbar-custom {
@@ -70,17 +40,11 @@ p {
     margin-bottom: 20px;
 }
 
-.site-header .navbar-nav .nav-link {
-    color: #cbd5db;
-}
+.site-header .navbar-nav .nav-link { color: #cbd5db; }
 
-.site-header .navbar-nav .nav-link:hover {
-    color: #ffffff;
-}
+.site-header .navbar-nav .nav-link:hover { color: #ffffff; }
 
-.site-header .navbar-nav .nav-link.active {
-    font-weight: 500;
-}
+.site-header .navbar-nav .nav-link.active { font-weight: 500; }
 
 .content-section {
     background: #ffffff;
@@ -90,18 +54,14 @@ p {
     margin-bottom: 20px;
 }
 
-.article-title {
-    color: #444444;
-}
+.article-title { color: #444444; }
 
 a.article-title:hover {
     color: #428bca;
     text-decoration: none;
 }
 
-.article-content {
-    white-space: pre-line;
-}
+.article-content { white-space: pre-line; }
 
 .article-img {
     height: 65px;
@@ -133,13 +93,9 @@ a.article-title:hover {
     margin-bottom: 16px;
 }
 
-.account-heading {
-    font-size: 2.5rem;
-}
+.account-heading { font-size: 2.5rem; }
 
-table {
-    margin: 5px 10px 10px 5px;
-}
+table { margin: 5px 10px 10px 5px; }
 
 .clear-text {
     font-family: 'Arial', cursive;
@@ -180,14 +136,14 @@ table {
 
 
 /*
-Below css were found on codepen
+Below css were modified versions of css sample found on codepen
 created by Pete Blatchford https://codepen.io/555/pen/pdwvBP
 */
 
 .stamp {
     margin: 10px 10px 10px 10px;
     transform: rotate(5deg);
-    opacity: .7
+    opacity: .7;
     color: #888;
     font-size: 1rem;
     font-weight: 900;
