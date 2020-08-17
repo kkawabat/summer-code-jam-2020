@@ -25,10 +25,12 @@ def setup(request, trivia_session):
     if 'phone_number' in request.POST:
         phonenumber_form = PhoneNumberForm(request.POST)
         if phonenumber_form.is_valid():
+            # create a new player instance with the phonenumber provided
             player = phonenumber_form.save(commit=False)
             player.active_session = trivia_session
+            player.save()
             messages.success(request, f'Invite sent to {player.phone_number}!')
-            SMSBot.send_quiz_invite(player.phone_number, trivia_session)
+            SMSBot.register_player_to_session(player, trivia_session, invited=True)
     else:
         phonenumber_form = PhoneNumberForm()
 
@@ -36,7 +38,7 @@ def setup(request, trivia_session):
 
 
 def times_up(request, trivia_session):
-    SMSBot.player_timeout(trivia_session)
+    SMSBot.question_timeout(trivia_session)
     cur_question = TriviaQuestion.objects.get(quiz=trivia_session.trivia_quiz,
                                               question_index=trivia_session.current_question_index)
     return render(request, 'session-question-page.html',
@@ -44,7 +46,7 @@ def times_up(request, trivia_session):
 
 
 def question(request, trivia_session):
-    SMSBot.send_all_questions(trivia_session)
+    SMSBot.send_question_to_players(trivia_session)
     cur_question = TriviaQuestion.objects.get(quiz=trivia_session.trivia_quiz,
                                               question_index=trivia_session.current_question_index)
     return render(request, 'session-question-page.html',
@@ -52,7 +54,12 @@ def question(request, trivia_session):
 
 
 def end_screen(request, trivia_session):
-    tally_results = SMSBot.calculate_results(trivia_session)
+    tally = trivia_session.calc_final_tally()
+    winner = tally[0][0] if len(tally) != 0 else "No one participated :("
+
+    tally_results = {'winner': winner, 'tally': tally}
+
+    SMSBot.announce_result(trivia_session, winner)
     return render(request, 'session-end-page.html',
                   {'trivia_session': trivia_session, 'tally_results': tally_results})
 

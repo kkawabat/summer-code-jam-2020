@@ -4,7 +4,6 @@ from django.urls import reverse
 
 
 class TriviaQuiz(models.Model):
-
     name = models.CharField(max_length=30, blank=False,)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=500,)
@@ -16,9 +15,15 @@ class TriviaQuiz(models.Model):
     def get_absolute_url(self):
         return reverse('quiz-detail', kwargs={'pk': self.pk})
 
+    def get_question_count(self) -> int:
+        return self.triviaquestion_set.count()
+
 
 class TriviaQuestion(models.Model):
     question_text = models.CharField(max_length=1000, blank=False,)
     question_answer = models.CharField(max_length=300, blank=False,)
     question_index = models.PositiveIntegerField(blank=False)
     quiz = models.ForeignKey(TriviaQuiz, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"question {self.question_index}. {self.question_text}"

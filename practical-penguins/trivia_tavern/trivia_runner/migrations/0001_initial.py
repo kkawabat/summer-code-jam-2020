@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('team_name', models.CharField(default='', max_length=24)),
                 ('phone_number', models.CharField(max_length=12)),
-                ('active_quiz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='trivia_runner.activetriviaquiz')),
+                ('active_session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='trivia_runner.activetriviaquiz')),
             ],
         ),
         migrations.AddField(

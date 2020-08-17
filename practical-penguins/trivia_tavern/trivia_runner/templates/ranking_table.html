@@ -7,11 +7,11 @@
         </tr>
     </thead>
     <tbody>
-    {% for row in tally_results.score_list %}
+    {% for row in tally_results.tally %}
         <tr>
-            <td class="tg-0lax">{{row.0}}</td>
+            <td class="tg-0lax">{{ forloop.counter }}</td>
             <td class="tg-0lax">{{row.1}}</td>
-            <td class="tg-0lax">{{row.2}}</td>
+            <td class="tg-0lax">{{row.0}}</td>
         </tr>
     {% endfor %}
     </tbody>
