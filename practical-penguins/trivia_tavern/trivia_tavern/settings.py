@@ -147,6 +147,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home_page'
 LOGIN_URL = 'login'
+
+# these settings are used to configure the phone number that will be used to send messages to trivia players
 HOST_TWILIO_NUMBER = os.getenv('TWILIO_NUMBER')
 HOST_TWILIO_SID = os.getenv('TWILIO_ACCOUNT_SID')
 HOST_TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
