@@ -28,8 +28,8 @@
         <input type="submit" class="stamp is-approved2" value="^ invite-player"/>
 
     </form>
-    {% include "trivia_next_step_btn.html" %}
-    {% include "cancel_session_btn.html" %}
+    {% include "session_button_templates.html" with btn_type="start" %}
+    {% include "session_button_templates.html" with btn_type="end" %}
 
 </div>
 {% endblock %}

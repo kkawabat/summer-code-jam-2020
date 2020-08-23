@@ -1,7 +1,0 @@
-{% if user == trivia_session.session_master %}
-    <!--if current_question_index is less than zero (meaning that the quiz has ended)-->
-    <form action="{% url 'trivia-session-delete' trivia_session.pk %}" method="post">
-        {% csrf_token %}
-        <input type="submit" class="stamp is-nope" name='end-quiz' value="Cancel Session">
-    </form>
-{% endif %}

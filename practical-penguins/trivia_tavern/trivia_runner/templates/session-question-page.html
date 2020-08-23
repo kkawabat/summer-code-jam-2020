@@ -54,8 +54,9 @@
     <div class="row justify-content-end">
         {% if request.user == trivia_session.session_master %}
 <!--            <button type="submit" class="stamp is-draft" value="pause-timer" id="pause-timer">Times up!</button>-->
+<!--        {% include "session_button_templates.html" with btn_type="next" %}-->
         {% endif %}
-        {% include "trivia_next_step_btn.html" %}
+        {% include "session_button_templates.html" with btn_type="next" %}
     </div>
     <h3>Next question in <span id="time"></span></h3>
 </div>

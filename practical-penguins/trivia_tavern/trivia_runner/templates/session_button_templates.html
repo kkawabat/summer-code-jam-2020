@@ -1,0 +1,32 @@
+{% if btn_type == "start" and user.is_authenticated %}
+    <form method="post"  action="{% url 'trivia-session' trivia_session.pk %}">
+        {% csrf_token %}
+        <input type="submit" class="stamp is-approved" name='next-question' value="Start Quiz">
+    </form>
+{% elif user == trivia_session.session_master %}
+    {% if btn_type == "next" %}
+        {% if trivia_session.current_question_index < trivia_session.trivia_quiz.triviaquestion_set.count %}
+            <form method="post"  action="{% url 'trivia-session' trivia_session.pk %}">
+                {% csrf_token %}
+                <input type="submit" class="stamp is-approved" name='next-question' value="Next question">
+            </form>
+        {% else %}
+            <form method="post"  action="{% url 'trivia-session' trivia_session.pk %}">
+                {% csrf_token %}
+                <input type="submit" class="stamp is-approved" name='show-results' value="Show Results">
+            </form>
+        {% endif %}
+    {% elif btn_type == "end"%}
+        {% if trivia_session.current_question_index != -1 %}
+            <form action="{% url 'trivia-session-delete' trivia_session.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="stamp is-nope" name='end-quiz' value="Cancel Session">
+            </form>
+        {% else %}
+            <form action="{% url 'trivia-session-delete' trivia_session.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="stamp is-nope" name='end-quiz' value="End Quiz">
+            </form>
+        {% endif %}
+    {% endif %}
+{% endif %}
