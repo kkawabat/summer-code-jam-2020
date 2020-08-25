@@ -106,7 +106,7 @@ class ScoreCardAnswer(models.Model):
 
 
 class Player(models.Model):
-    score_card = models.OneToOneField(ScoreCard, on_delete=models.CASCADE)
+    score_card = models.OneToOneField(ScoreCard, null=True, on_delete=models.CASCADE)
     team_name = models.CharField(max_length=24, default='')
     phone_number = PhoneNumberField()
 

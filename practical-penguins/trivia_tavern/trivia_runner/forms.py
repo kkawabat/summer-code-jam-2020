@@ -13,19 +13,6 @@ class PhoneNumberForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PhoneNumberForm, self).__init__(*args, **kwargs)
-        self.fields['phone_number'].label = "Phone number* (US domestic or internation format only)"
+        self.fields['phone_number'].label = "Phone number (internation format only)"
+        self.fields['phone_number'].widget.attrs.update({'placeholder': '+X-XXX-XXX-XXXX'})
 
-    def clean_phone_number(self):
-        """
-        try to ensure the phone number is valid, if not try assume it's in US format, if user input is invalid
-        if that fails raise ValidationError
-        """
-        phone_number = self.cleaned_data['phone_number']
-        if PhoneNumber.from_string(phone_number).is_valid():
-            return phone_number
-        else:
-            us_phone_number = PhoneNumber.from_string(phone_number, region="us")
-            if us_phone_number.is_valid():
-                return str(us_phone_number)
-            else:
-                raise ValidationError(f"phone number not valid use +XXXXXXXXXXX format", code='invalid')

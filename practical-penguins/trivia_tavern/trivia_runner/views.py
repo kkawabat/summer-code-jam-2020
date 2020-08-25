@@ -21,7 +21,6 @@ class ActiveTriviaSessionListView(ListView):
 
 
 def setup(request, trivia_session):
-    print(request.POST)
     if 'phone_number' in request.POST:
         phonenumber_form = PhoneNumberForm(request.POST)
         if phonenumber_form.is_valid():
