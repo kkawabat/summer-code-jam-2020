@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from phonenumber_field.phonenumber import PhoneNumber
 
 from trivia_runner.models import TriviaSession, Player
 
@@ -13,7 +14,7 @@ class SMSBot:
     """
 
     @staticmethod
-    def send(msg: str, recipient):
+    def send(msg: str, recipient: PhoneNumber):
         """send will send a message 'msg' to a 'recipient'
         This is not really a view method, but a helper method for the main
         sms_reply method
@@ -23,7 +24,7 @@ class SMSBot:
         message = client.messages.create(
             body=msg,
             from_=twilio_number,
-            to=recipient
+            to=recipient.as_international
         )
         return message
 
@@ -32,8 +33,8 @@ class SMSBot:
         active_session.add_player_with_number(number)
 
         if invited:
-            welcome = (f'Hello! You\'ve been invited to play trivia by {active_session.session_master.username}'
-                       f'If you\'re not expecting this, just text back !quit we won\'t bother you!'
+            welcome = (f'Hello! You\'ve been invited to play trivia by {active_session.session_master.username}. '
+                       f'If you\'re not expecting this, just text back !quit and we won\'t bother you anymore!'
                        f'Otherwise, please text back a team name to join')
         else:
             welcome = (f'You registered to play "{active_session.trivia_quiz.name}." '

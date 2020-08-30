@@ -49,7 +49,7 @@ class TriviaSession(models.Model):
             player.save()
 
             # add player to session
-            self.players.add(player)
+            self.scoredeck.add(score_card)
             self.save()
         return player
 
