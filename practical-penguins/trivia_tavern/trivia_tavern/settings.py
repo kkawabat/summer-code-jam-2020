@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from twilio.rest import Client
+from dotenv import read_dotenv
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -148,9 +150,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'home_page'
 LOGIN_URL = 'login'
 
-# these settings are used to configure the phone number that will be used to send messages to trivia players
-HOST_TWILIO_NUMBER = os.getenv('TWILIO_NUMBER')
-HOST_TWILIO_SID = os.getenv('TWILIO_ACCOUNT_SID')
-HOST_TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
-TWILIO_CLIENT = Client(HOST_TWILIO_SID, HOST_TWILIO_AUTH_TOKEN)
+try:
+    env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    read_dotenv(env_file)
 
+    # these settings are used to configure the phone number that will be used to send messages to trivia players
+    HOST_TWILIO_NUMBER = os.getenv('TWILIO_NUMBER')
+    HOST_TWILIO_SID = os.getenv('TWILIO_ACCOUNT_SID')
+    HOST_TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+    TWILIO_CLIENT = Client(HOST_TWILIO_SID, HOST_TWILIO_AUTH_TOKEN)
+except Exception as e:
+    print("Could not find valid twilio configuration, "
+          "see README.md 'set environment variables to your Twilio account' for more details")
+    raise e

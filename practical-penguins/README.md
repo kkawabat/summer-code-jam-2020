@@ -81,16 +81,14 @@ python manage.py loaddata fixtures/fixture_trivia_packs.json
 ```
 
 #### set environment variables to your Twilio account
-In order to configure the project to use your twilio account simply create a `.env` file inside the root trivia_tavern 
-directory and add the following lines:
+In order to configure the project to use your twilio account simply create a `.env` file inside 
+`trivia_tavern/trivia_tavern` directory and add the following lines:
 ```bash
   export TWILIO_ACCOUNT_SID=<your-account-id>
   export TWILIO_AUTH_TOKEN=<your-account-secret>
   export TWILIO_NUMBER=<your-number>
 ```
-Where the parameters inside `<>`s can be found when using your twilio account. 
-The above encironment variables can also be added to your bashrc file if you are using linux/macOs or adding them to 
-`System > Advanced > Environment Variables` in windows
+Where the parameters inside `<>`s can be found on your own twilio dashboard.
 
 ####Pillow issues
 NOTE: We have encountered installation issues when trying to install Pillow on windows
