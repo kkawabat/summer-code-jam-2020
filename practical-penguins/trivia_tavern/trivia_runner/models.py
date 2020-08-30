@@ -45,7 +45,7 @@ class TriviaSession(models.Model):
             score_card.save()
 
             # create player with score card
-            player = Player.objects.create(active_session=self, phone_number=phone_number, score_card=score_card)
+            player = Player.objects.create(phone_number=phone_number, score_card=score_card)
             player.save()
 
             # add player to session
@@ -111,4 +111,7 @@ class Player(models.Model):
     phone_number = PhoneNumberField()
 
     def __str__(self):
-        return f'Player {self.team_name}, currently playing {self.score_card.session.trivia_quiz.name}'
+        if self.score_card is None:
+            return f'Player {self.team_name} not registered to any games atm.'
+        else:
+            return f'Player {self.team_name}, currently playing {self.score_card.session.trivia_quiz.name}'

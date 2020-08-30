@@ -29,6 +29,8 @@ class SMSBot:
 
     @staticmethod
     def register_player_to_session(number, active_session, invited=True):
+        active_session.add_player_with_number(number)
+
         if invited:
             welcome = (f'Hello! You\'ve been invited to play trivia by {active_session.session_master.username}'
                        f'If you\'re not expecting this, just text back !quit we won\'t bother you!'
@@ -39,7 +41,6 @@ class SMSBot:
                        f'If you didn\'t mean to do this, text !quit at any time')
 
         SMSBot.send(welcome, number)
-        active_session.add_player_with_number(number)
 
     @staticmethod
     def set_team_name(team_name, player):

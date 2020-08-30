@@ -24,12 +24,11 @@ def setup(request, trivia_session):
     if 'phone_number' in request.POST:
         phonenumber_form = PhoneNumberForm(request.POST)
         if phonenumber_form.is_valid():
-            # Add a new player instance to session, then clear form
+            # todo initially I wanted to create a player here but I think it's better to simply get phonenumber from
+            # phonenumber form instead
             player = phonenumber_form.save(commit=False)
-            player.active_session = trivia_session
-            player.save()
             messages.success(request, f'Invite sent to {player.phone_number}!')
-            SMSBot.register_player_to_session(player, trivia_session, invited=True)
+            SMSBot.register_player_to_session(player.phone_number, trivia_session, invited=True)
             phonenumber_form = PhoneNumberForm()
     else:
         phonenumber_form = PhoneNumberForm()
