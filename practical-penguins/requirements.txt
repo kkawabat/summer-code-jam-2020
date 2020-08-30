@@ -7,3 +7,4 @@ twilio==6.44.2
 django-eventstream
 django-phonenumber-field
 phonenumbers
+django-dotenv

@@ -10,6 +10,9 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from dotenv import read_dotenv
+trivia_tavern_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+read_dotenv(os.path.join(trivia_tavern_root, '.env'))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trivia_tavern.settings')
 
