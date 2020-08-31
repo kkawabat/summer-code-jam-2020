@@ -152,7 +152,7 @@ LOGIN_URL = 'login'
 
 try:
     env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
-    read_dotenv(env_file)
+    read_dotenv(env_file, override=True)
 
     # these settings are used to configure the phone number that will be used to send messages to trivia players
     HOST_TWILIO_NUMBER = os.getenv('TWILIO_NUMBER')
@@ -163,3 +163,6 @@ except Exception as e:
     print("Could not find valid twilio configuration, "
           "see README.md 'set environment variables to your Twilio account' for more details")
     raise e
+
+# attempt to solve SynchronousOnlyOperation error see https://stackoverflow.com/q/61926359/4231985
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
