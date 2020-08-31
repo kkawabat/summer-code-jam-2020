@@ -54,7 +54,7 @@ def question(request, trivia_session):
 
 def end_screen(request, trivia_session):
     tally = trivia_session.calc_final_tally()
-    winner = tally[0][0] if len(tally) != 0 else "No one participated :("
+    winner = tally[0][1] if len(tally) != 0 else "No one participated :("
 
     tally_results = {'winner': winner, 'tally': tally}
 

@@ -33,7 +33,7 @@ class TriviaSession(models.Model):
 
     def calc_final_tally(self) -> List[Tuple[int, str]]:
         """return a list of final (score, team) tuple in a list, sorted in descending order"""
-        final_tally = [(score_card.calc_score(), score_card.player.team_name) for score_card in self.scoredeck]
+        final_tally = [(score_card.calc_score(), score_card.player.team_name) for score_card in self.scoredeck.all()]
         final_tally = list(reversed(sorted(final_tally, key=lambda x: x[0])))
         return final_tally
 
@@ -54,7 +54,7 @@ class TriviaSession(models.Model):
         return player
 
     def is_name_taken(self, name):
-        for card in self.scoredeck:
+        for card in self.scoredeck.all():
             if card.player.team_name == name:
                 return True
         return False
@@ -68,16 +68,16 @@ class ScoreCard(models.Model):
     session = models.ForeignKey(TriviaSession, on_delete=models.CASCADE, related_name='scoredeck')
 
     def calc_score(self) -> int:
-        return sum([answer.is_correct() for answer in self.scorecardanswer_set])
+        return sum([answer.is_correct() for answer in self.scorecardanswer_set.all()])
 
     def get_result_details(self) -> str:
-        answer_set = ScoreCardAnswer.objects.filter(player=self.player)
+        answer_set = ScoreCardAnswer.objects.filter(score_card=self.player.score_card)
         question_results = [answer.result_detail() for i, answer in enumerate(answer_set, start=1)]
         return '\n'.join(question_results)
 
     def answer_question(self, player_response, question):
         with transaction.atomic():
-            score_card_answer = ScoreCardAnswer.object.create(value=player_response, question=question, score_card=self)
+            score_card_answer = ScoreCardAnswer.objects.create(value=player_response, question=question, score_card=self)
             score_card_answer.save()
             self.scorecardanswer_set.add(score_card_answer)
             self.save()
@@ -108,7 +108,7 @@ class ScoreCardAnswer(models.Model):
 class Player(models.Model):
     score_card = models.OneToOneField(ScoreCard, null=True, on_delete=models.CASCADE)
     team_name = models.CharField(max_length=24, default='')
-    phone_number = PhoneNumberField()
+    phone_number = PhoneNumberField(unique=True)
 
     def __str__(self):
         if self.score_card is None:

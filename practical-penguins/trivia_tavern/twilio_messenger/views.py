@@ -50,10 +50,11 @@ class SMSBot:
             msg = f"team {team_name} already exists, please choose another name"
 
         else:
-            if player.team_name != '':
-                msg = f'Your team name is now "{player.team_name}" please wait for session to begin'
+
+            if player.team_name == '':
+                msg = f'Your team name is now "{team_name}" please wait for session to begin'
             else:
-                msg = f'Your team has been updated! You are now on team "{player.team_name}"'
+                msg = f'Your team has been updated! You are now on team "{team_name}"'
 
             player.team_name = team_name
             player.save()
@@ -91,23 +92,23 @@ class SMSBot:
     def question_timeout(trivia_session):
         current_question = trivia_session.get_current_question()
 
-        for card in trivia_session.scoredeck:
+        for card in trivia_session.scoredeck.all():
             # answer blank for current question if they have not answered yet
             if not card.question_answered(current_question):
                 card.answer_question("", current_question)
-                SMSBot.send("times up, you answered blank for this question", card.player_set.phone_number)
+                SMSBot.send("times up, you answered blank for this question", card.player.phone_number)
 
     @staticmethod
     def send_question_to_players(trivia_session):
         current_question = trivia_session.get_current_question()
 
-        for card in trivia_session.scoredeck:
+        for card in trivia_session.scoredeck.all():
             SMSBot.send(str(current_question), card.player.phone_number)
 
     @staticmethod
     def announce_result(trivia_session, winner):
         # send result of the session and delete the card/player
-        for card in trivia_session.scoredeck:
+        for card in trivia_session.scoredeck.all():
             goodbye = (f'The session has ended, thanks for playing!\n'
                        f'Team {winner} was the winner!\n'
                        f'Your score was: {card.calc_score()}/{trivia_session.trivia_quiz.get_question_count}')
