@@ -1,25 +1,25 @@
 # ![Trivia Tavern](trivia_tavern/static/header_logo.png)
 by Practical :penguin:
- 
+
 ## Table of Contents
 
 1. [About](#about)
 2. [App features](#tour-of-the-app)
     1. [Create Trivia Packs (session master)](#create-trivia-packs-session-master)
     2. [Host trivia session (session master)](#host-trivia-session-session-master)
-    3. [Join session using your phone (participant)](#join-session-using-your-phone-participant)
-    4. [View Trivia packs by user (session master/participant)](#view-trivia-packs-by-user-session-masterparticipant) 
+    3. [Join session using your phone (participant)](#join-session-usingour-phone-participant)
+    4. [View Trivia packs by user (session master/participant)](#view-trivia-packs-by-user-session-masterparticipant)
 3. [Installation](#Installation)
-5. [how to run your own server locally](#how-to-run-your-own-server-locally) 
+5. [how to run your own server locally](#how-to-runour-own-server-locally)
 6. [Future Ideas](#future-ideas)
 
 ## About
 This django web application allows people to create and organize trivia events. Participants can then answer trivia
  question using their phones.
- 
+
 ## App features
-We are hosting our app publicly for a limited time [here](https://a95e3eb77ce9.ngrok.io). To run your 
-own server with your own twilio account [see here](#how-to-run-your-own-server-locally).
+We are hosting our app publicly for a limited time [here](https://a95e3eb77ce9.ngrok.io). To run your
+own server with your own twilio account [see here](#how-to-runour-own-server-locally).
 
 For basic operation, you need only create an account, and when you're ready just hit "Run Quiz" to
 complete setting up your first quiz session. When you run it, you'll see the current question display
@@ -41,7 +41,7 @@ or select from prebuilt trivia packs provided by us truly
 
 ### Join session using your phone (participant)
 
-Participants can join using their phone by texting the the trivia session code to the phone number provided 
+Participants can join using their phone by texting the the trivia session code to the phone number provided
 ![alt text](screenshots/invite.PNG?raw=True)
 
 ![alt text](screenshots/sms_screenshot.jpg?raw=True)
@@ -49,7 +49,7 @@ Participants can join using their phone by texting the the trivia session code t
 ### View Trivia packs by user (session master/participant)
 
 Click on user's name to see their profile as well as trivia packs they have created.
- 
+
 ![alt text](screenshots/profile-page.PNG?raw=True)
 
 ## Installation
@@ -66,8 +66,8 @@ cd practical-penguins
 run setup.py
 
     python setup.py install
-  
-**Note: you might run into some difficulty with Pillow on windows machine if so please see [here](#pillow-issues)**
+
+**Note: you might run into some difficulty with Pillow on Windows and some Linux distributions if so please see [here](#pillow-issues)**
 
 initialize database
 
@@ -92,10 +92,22 @@ into your ~/.bashrc, without the '<>':
 
 Environment variables in Windows can be set similarly by adding them to System>Advanced>Environment Variables
 
-####Pillow issues
+#### Pillow issues
 NOTE: We have encountered installation issues when trying to install Pillow on windows
 (see [here](https://stackoverflow.com/questions/41188838/cant-install-pillow-in-windows)).
 Try to install Pillow before the above command if there are issues relating to `Pillow`.
+
+If you are using a Raspberry Pi, or a "bare bones" Linux distro, you will likely need the following
+packages (thanks to [this article](https://www.techcoil.com/blog/how-to-setup-python-imaging-library-pillow-on-raspbian-stretch-lite-for-processing-images-onour-raspberry-pi/) for the info):
+
+```bash
+  sudo apt install libjpeg-dev
+  sudo apt install zlib1g-dev
+  sudo apt install libfreetype6-dev
+  sudo apt install liblcms1-dev
+  sudo apt install libopenjp2-7
+  sudo apt install libtiff5
+```
 
 ## how to run your own server locally
 

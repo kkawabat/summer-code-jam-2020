@@ -106,7 +106,7 @@ class SMSBot:
         score_track = ScoreTracker.objects.get(player_phone=player.phone_number,
                                                session_code=player_quiz.session_code)
         if score_track.answered_this_round:
-            return SMSBot.send('You already answered! Don\'t cheat!', player.phone_number)
+            return SMSBot.send('You had your chance! Don\'t cheat!', player.phone_number)
 
         ans = Answer.objects.create(value=body, player=player, question=current_question)
         if ans.is_correct():
