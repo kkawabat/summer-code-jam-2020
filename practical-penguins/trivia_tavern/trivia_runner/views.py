@@ -9,7 +9,7 @@ from trivia_builder.models import TriviaQuestion
 from trivia_runner.models import ActiveTriviaQuiz
 from twilio_messenger.views import SMSBot
 
-from .forms import PhoneNumberForm
+from .forms import PhoneNumberForm, TimeoutForm
 
 
 class ActiveTriviaQuizListView(ListView):
@@ -21,18 +21,33 @@ class ActiveTriviaQuizListView(ListView):
 
 
 def setup(request, active_trivia_quiz):
-    print(request.POST)
     if 'phone_number' in request.POST:
-        form = PhoneNumberForm(request.POST)
-        if form.is_valid():
-            form.save()
-            number = form.cleaned_data.get('phone_number').__str__()
+        phone_form = PhoneNumberForm(request.POST)
+        if phone_form.is_valid():
+            phone_form.save()
+            number = phone_form.cleaned_data.get('phone_number').__str__()
             messages.success(request, f'Invite sent to {number}!')
             SMSBot.send_quiz_invite(number, active_trivia_quiz)
     else:
-        form = PhoneNumberForm()
+        phone_form = PhoneNumberForm()
 
-    return render(request, 'activequiz_setup.html', {'active_trivia_quiz': active_trivia_quiz, 'form': form})
+    if 'timeout' in request.POST:
+        timeout_form = TimeoutForm(request.POST)
+        if timeout_form.is_valid():
+            t = int(timeout_form.cleaned_data.get('timeout'))
+            active_trivia_quiz.timeout = t
+            active_trivia_quiz.save()
+            messages.success(request, f'Timer set to {active_trivia_quiz.timeout}!')
+    else:
+        timeout_form = TimeoutForm()
+
+    return render(request,
+        'activequiz_setup.html',
+            { 'active_trivia_quiz': active_trivia_quiz,
+                'phone_form': phone_form,
+                'timeout_form': timeout_form
+            }
+    )
 
 
 def times_up(request, active_trivia_quiz):

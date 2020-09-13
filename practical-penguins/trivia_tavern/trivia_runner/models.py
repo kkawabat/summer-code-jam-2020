@@ -52,6 +52,7 @@ class ActiveTriviaQuiz(models.Model):
                                     default=gen_session_code, editable=False)
     current_question_index = models.IntegerField(default=0)
     session_master = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_master')
+    timeout = models.IntegerField(default=30)
     start_time = models.DateTimeField(default=timezone.now)
     players = models.ManyToManyField(Player, related_name='quiz_players')
 

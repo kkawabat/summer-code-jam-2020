@@ -24,8 +24,14 @@
 
     <form method="post" >
         {% csrf_token %}
-        {{ form|crispy }}
+        {{ phone_form|crispy }}
         <input type="submit" class="stamp is-approved2" value="^ invite-player"/>
+
+    </form>
+    <form method="post" >
+        {% csrf_token %}
+        {{ timeout_form|crispy }}
+        <input type="submit" class="stamp is-approved2" value="^ set-timeout"/>
 
     </form>
     {% include "trivia_next_step_btn.html" %}

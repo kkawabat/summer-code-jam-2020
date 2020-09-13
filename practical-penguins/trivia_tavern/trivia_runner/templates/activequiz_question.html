@@ -6,9 +6,8 @@
 <script>
 
   window.onload = function() {
-    //hard coded to thirty seconds. Change this to the variable the host sets
     var display = document.querySelector("#time"),
-        timer = new CountDownTimer(30);
+        timer = new CountDownTimer( {{ active_trivia_quiz.timeout }} );
 
     var pause_button = document.getElementById("pause-timer")
 
