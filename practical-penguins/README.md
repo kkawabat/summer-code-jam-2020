@@ -10,8 +10,9 @@ by Practical :penguin:
     3. [Join session using your phone (participant)](#join-session-usingour-phone-participant)
     4. [View Trivia packs by user (session master/participant)](#view-trivia-packs-by-user-session-masterparticipant)
 3. [Installation](#Installation)
-5. [how to run your own server locally](#how-to-runour-own-server-locally)
-6. [Future Ideas](#future-ideas)
+    1. [Pillow Issues](#pillow-issues)
+4. [how to run your own server locally](#how-to-runour-own-server-locally)
+5. [Future Ideas](#future-ideas)
 
 ## About
 This django web application allows people to create and organize trivia events. Participants can then answer trivia
@@ -92,7 +93,7 @@ into your ~/.bashrc, without the '<>':
 
 Environment variables in Windows can be set similarly by adding them to System>Advanced>Environment Variables
 
-#### Pillow issues
+### Pillow issues
 NOTE: We have encountered installation issues when trying to install Pillow on windows
 (see [here](https://stackoverflow.com/questions/41188838/cant-install-pillow-in-windows)).
 Try to install Pillow before the above command if there are issues relating to `Pillow`.
